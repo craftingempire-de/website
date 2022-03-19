@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CraftingEmpire Startseite</title>
+
+        <!-- Meta -->
+        <meta property="og:site_name" content="craftingempire.de" />
+        <meta name="application-name" content="craftingempire.de" />
+        <meta name="apple-mobile-web-app-title" content="craftingempire.de" />
+        <meta property="og:title" content="craftingempire.de" />
+        <meta property="og:description" content="Innovative Minecraft Projekte" />
+        <meta name="description" content="Innovative Minecraft Projekte" />
+
+        <meta property="og:locale" content="de" />
+        <meta property="og:image" content="/static/logo.png" />
+        <meta name="robots" content="index, follow" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="language" content="german" />
+        <meta name="revisit-after" content="30 days" />
+        <meta name="author" content="LuciferMorningstarDev" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="theme-color" content="#060535" />
+        <meta name="msapplication-TileColor" content="#060535" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="#060535" />
+
+        <link rel="canonical" href="/" />
+        <meta property="og:url" content="/" />
+
+        <script src="https://cdn.jsdelivr.net/npm/hquery.js@0.0.6/dist/hQuery.min.js"></script>
+
+        <!-- fontawesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <link rel="stylesheet" href="/static/styles/css/main.css" />
+        <script src="/static/scripts/main.js"></script>
+
+        <script src="/static/scripts/cookies.js"></script>
+
+        <!--
+            -Soziale Netzwerke, Discord
+            -Aktuelles Projekt:
+                -Startermin
+                -Beschreibung
+            -Status: Minecraftserver on/offline, Spieleranzahl, Spieler
+        -->
+    </head>
+    <body>
+        <header id="navbar-header">
+            <nav class="navbar">
+                <a class="nav-brand" href="<%= pathname == '/' ? '#' : '/' %>">
+                    <img class="nav-brand-logo" src="/static/logo.png" alt="Page Logo" />
+                    <h3 class="nav-brand-title mcfont">CraftingEmpire.de</h3>
+                </a>
+                <ul class="nav-items">
+                    <li class="nav-item nav-dc">
+                        <a target="_blank" href="/discord" class="nav-link"> <i class="fab fa-discord fa-xl"></i> Discord </a>
+                    </li>
+                    <li class="nav-item nav-tw">
+                        <a target="_blank" href="/twitter" class="nav-link"> <i class="fab fa-twitter fa-xl"></i> Twitter </a>
+                    </li>
+                    <li class="nav-item nav-yt">
+                        <a target="_blank" href="/youtube" class="nav-link"> <i class="fab fa-youtube fa-xl"></i> Youtube </a>
+                    </li>
+                </ul>
+                <div class="nav-item nav-dc">
+                    <a href="/oauth2/discord/login" class="nav-link">Login via <i class="fab fa-discord"></i></a>
+                </div>
+            </nav>
+        </header>
+        <main class="main-content" id="main-content">
+            <section>
+                <h1 class="mcfont">CRAFTINGEMPIRE.DE | Maintenance</h1>
+            </section>
+        </main>
+        <footer class="footer" id="footer">
+            <div class="footer-content">
+                <p>Copyright © 2022 | <a target="_blank" href="https://lucifer-morningstar.dev/">LuciferMorningstarDev</a> | All Rights Reserved</p>
+            </div>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,116 @@
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+
+    opacity: 1;
+
+    transition: opacity 200ms;
+
+    .navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+
+        background: rgba(0, 0, 0, 0.25);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+
+        .nav-brand {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+
+            .nav-brand-logo {
+                width: 50px;
+                border-radius: 50%;
+            }
+
+            .nav-brand-title {
+                margin-left: 10px;
+                font-size: 20px;
+            }
+        }
+
+        .nav-items {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+            min-width: 50vw;
+            height: var(--nav-height);
+        }
+
+        .nav-dc {
+            --accent-color: var(--hover-discord);
+        }
+        .nav-tw {
+            --accent-color: var(--hover-twitter);
+        }
+        .nav-yt {
+            --accent-color: var(--hover-youtube);
+        }
+
+        .nav-item {
+            border: 1px dotted transparent;
+            border-radius: 5px;
+
+            margin-left: 10px;
+
+            font-weight: 600;
+            font-size: 20px;
+
+            .nav-link {
+                border: 1px solid transparent;
+                padding: 10px;
+
+                &:hover {
+                    color: var(--accent-color);
+
+                    background: rgba(255, 255, 255, 0.15);
+                    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+                    backdrop-filter: blur(4px);
+                    -webkit-backdrop-filter: blur(4px);
+                    border-radius: 3px;
+                    border: 1px solid rgba(255, 255, 255, 0.18);
+
+                    .fab {
+                        color: var(--accent-color);
+                    }
+                }
+            }
+        }
+
+        .active {
+            color: calc(var(--accent-color) - 20);
+            border: 1px dotted var(--accent-color);
+        }
+    }
+}
+
+.hide-nav {
+    opacity: 0;
+}
+
+.fa-discord {
+    path {
+        color: var(--hover-discord);
+    }
+}
+
+.fa-twitter {
+    path {
+        color: var(--hover-twitter);
+    }
+}
+
+.fa-youtube {
+    path {
+        color: var(--hover-youtube);
+    }
+}

@@ -1,0 +1,76 @@
+.outer-cookie {
+    position: fixed;
+    bottom: -110%;
+    left: 10px;
+    padding: 5px;
+    max-width: 50vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: bottom 650ms;
+}
+
+.outer-active {
+    bottom: 10px;
+}
+
+.cookieModal {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+        margin: 10px;
+    }
+
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    .cookieModal-main {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        color: #00cc00;
+    }
+
+    .cookie-accept {
+        color: white;
+
+        background: rgba(20, 255, 0, 0.25);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+
+        padding: 10px 20px;
+        margin: 10px;
+
+        &:hover {
+            color: #222;
+            background: rgba(20, 255, 0, 0.45);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+    }
+
+    p {
+        margin: 10px;
+    }
+
+    .fa-cookie-bite {
+        path {
+            color: #00cc00;
+        }
+    }
+}
