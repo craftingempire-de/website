@@ -53,11 +53,11 @@ const cookieParser = require('cookie-parser');
 
 const fileUpload = require('express-fileupload');
 const session = require('express-session');
-var { randomBytes } = require('crypto');
 
 const { Logger } = require('./modules/node-logger');
+const discordFetcher = require('./modules/discord-fetch');
 
-const authRequired = require('./middleware/auth');
+const auth = require('./middleware/auth');
 
 const app = express();
 
@@ -121,15 +121,7 @@ app.use(
     })
 );
 
-app.use(function (req, res, next) {
-    if (!req.session.csrf) {
-        req.session.csrf = randomBytes(100).toString('base64');
-    }
-    if (req.query.next) {
-        req.session.next = req.query.next;
-    }
-    next();
-});
+app.use(auth.defaultMiddleware());
 
 app.use(
     fileUpload({
@@ -164,68 +156,6 @@ app.get('/youtube', async (req, res) => {
 });
 
 // ================================================ DISCORD LOGIN ================================================
-
-var fetchDiscordUserByToken = async (token) => {
-    return new Promise(async (resolve, reject) => {
-        var response = await fetch(DISCORD_OAUTH2_ENDPOINT + '/users/@me', {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        }).catch(reject);
-        resolve(await response.json().catch(reject));
-    });
-};
-
-var fetchDiscordGuildByToken = async (token) => {
-    return new Promise(async (resolve, reject) => {
-        var response = await fetch(DISCORD_OAUTH2_ENDPOINT + '/users/@me/guilds', {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        }).catch(reject);
-        resolve(await response.json());
-    });
-};
-
-var refreshUserToken = async (refresh_token) => {
-    return new Promise(async (resolve, reject) => {
-        request
-            .post(
-                DISCORD_OAUTH2_ENDPOINT + '/oauth2/token',
-                {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                },
-                (error, response, body) => {
-                    if (error) {
-                        return reject(error);
-                    }
-                    let obj = JSON.parse(body);
-                    app.logger.log(obj);
-                    if (obj.error) {
-                        return reject(obj);
-                    }
-                    let token = obj['access_token'];
-                    let refresh_token = obj['refresh_token'];
-                    return resolve({
-                        token: token,
-                        refresh_token: refresh_token,
-                    });
-                }
-            )
-            .form({
-                client_id: DISCORD_OAUTH2_APPLICATION_ID,
-                client_secret: DISCORD_OAUTH2_APPLICATION_SECRET,
-                grant_type: 'refresh_token',
-                refresh_token: refreshToken,
-                redirect_uri: DISCORD_OAUTH2_CALLBACK,
-                scope: 'identify email guilds',
-            });
-    });
-};
 
 app.get('/oauth2/discord/callback', async (req, res) => {
     let code = req.query.code;
@@ -272,8 +202,8 @@ app.get('/oauth2/discord/callback', async (req, res) => {
                 }
                 let token = obj['access_token'];
                 let refresh_token = obj['refresh_token'];
-                let userData = await fetchDiscordUserByToken(token);
-                let allJoinedGuilds = await fetchDiscordGuildByToken(token);
+                let userData = await discordFetcher.fetchDiscordUserByToken(token);
+                let allJoinedGuilds = await discordFetcher.fetchDiscordGuildByToken(token);
                 let joinedGuilds = allJoinedGuilds.filter((g) => g.id == DISCORD_GUILD_ID);
                 let joined = joinedGuilds.length > 0;
 
@@ -318,14 +248,12 @@ app.get('/login', async (req, res) => {
 });
 
 app.get('/oauth2/discord/logout', async (req, res) => {
-    let red = req.session.next;
     req.session.isLoggedIn = false;
     req.session.destroy();
     return res.redirect(req.query.next || '/');
 });
 
 app.get('/logout', async (req, res) => {
-    let red = req.session.next;
     req.session.isLoggedIn = false;
     req.session.destroy();
     return res.redirect(req.query.next || '/');

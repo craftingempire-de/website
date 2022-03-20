@@ -78,11 +78,11 @@
                     </a>
                 </div>
                 <div class="nav-item nav-dc">
-                    <a href="/oauth2/discord/logout" class="nav-link">Logout</a>
+                    <a href="/logout?next=<%= pathname %>" class="nav-link">Logout</a>
                 </div>
                 <% } else { %>
                 <div class="nav-item nav-dc">
-                    <a href="/oauth2/discord/login" class="nav-link">Login via <i class="fab fa-discord"></i></a>
+                    <a href="/login?next=<%= pathname %>" class="nav-link">Login via <i class="fab fa-discord"></i></a>
                 </div>
                 <% } %>
             </nav>
