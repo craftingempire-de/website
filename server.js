@@ -322,6 +322,17 @@ app.get('/', async (req, res) => {
     });
 });
 
+const minecraftPinger = require('./modules/minecraft-ping');
+app.get('/status', async (req, res) => {
+    // 23.88.6.237:25102
+    minecraftPinger.ping('23.88.6.237', 25102, (error, result) => {
+        if (error) {
+            return res.json({ error: true, pingable: false });
+        }
+        return res.json({ error: false, pingable: true, data: result });
+    });
+});
+
 app.get('/404', async (req, res) => {
     res.render('404', { applicationMode: applicationMode, pathname: req.url });
 });
