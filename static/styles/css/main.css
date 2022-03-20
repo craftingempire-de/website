@@ -9,6 +9,7 @@
   --nav-height: 60px;
   --hover-twitter: #1da1f2;
   --hover-discord: #7289da;
+  --hover-github: #4078c0;
   --hover-youtube: #ff0000;
 }
 
@@ -116,6 +117,9 @@ header .navbar .nav-items {
 header .navbar .nav-dc {
   --accent-color: var(--hover-discord);
 }
+header .navbar .nav-gh {
+  --accent-color: var(--hover-github);
+}
 header .navbar .nav-tw {
   --accent-color: var(--hover-twitter);
 }
@@ -156,6 +160,10 @@ header .navbar .active {
 
 .fa-discord path {
   color: var(--hover-discord);
+}
+
+.fa-github path {
+  color: var(--hover-github);
 }
 
 .fa-twitter path {

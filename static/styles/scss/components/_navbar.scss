@@ -49,9 +49,15 @@ header {
         .nav-dc {
             --accent-color: var(--hover-discord);
         }
+
+        .nav-gh {
+            --accent-color: var(--hover-github);
+        }
+
         .nav-tw {
             --accent-color: var(--hover-twitter);
         }
+
         .nav-yt {
             --accent-color: var(--hover-youtube);
         }
@@ -100,6 +106,12 @@ header {
 .fa-discord {
     path {
         color: var(--hover-discord);
+    }
+}
+
+.fa-github {
+    path {
+        color: var(--hover-github);
     }
 }
 

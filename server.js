@@ -146,6 +146,9 @@ app.use('/static', express.static('static'));
 app.get('/discord', async (req, res) => {
     res.redirect('https://discord.gg/bUrpSBsBtb');
 });
+app.get('/github', async (req, res) => {
+    res.redirect('https://github.com/craftingempire-de');
+});
 app.get('/twitter', async (req, res) => {
     res.redirect('https://twitter.com/crafting_empire');
 });
