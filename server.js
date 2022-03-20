@@ -56,6 +56,7 @@ const session = require('express-session');
 
 const { Logger } = require('./modules/node-logger');
 const discordFetcher = require('./modules/discord-fetch');
+const minecraftPinger = require('./modules/minecraft-ping');
 
 const auth = require('./middleware/auth');
 
@@ -314,22 +315,28 @@ app.get('/logout', async (req, res) => {
 // ================================================ DISCORD LOGIN ================================================
 
 app.get('/', async (req, res) => {
-    res.render('index', {
-        applicationMode: applicationMode,
-        pathname: req.url,
-        isLoggedIn: req.session.isLoggedIn || false,
-        user: req.session.user || null,
+    minecraftPinger.ping(process.env.MC_SERVER_ADDRESS, process.env.MC_SERVER_PORT, (error, result) => {
+        var pingInfo;
+        if (error) {
+            pingInfo = { error: true, pingable: false };
+        } else pingInfo = { error: false, pingable: true, data: result };
+        res.render('index', {
+            applicationMode: applicationMode,
+            pathname: req.url,
+            isLoggedIn: req.session.isLoggedIn || false,
+            user: req.session.user || null,
+            pingInfo: pingInfo,
+        });
     });
 });
 
-const minecraftPinger = require('./modules/minecraft-ping');
 app.get('/status', async (req, res) => {
-    // 23.88.6.237:25102
-    minecraftPinger.ping('23.88.6.237', 25102, (error, result) => {
+    minecraftPinger.ping(process.env.MC_SERVER_ADDRESS, process.env.MC_SERVER_PORT, (error, result) => {
+        var pingInfo;
         if (error) {
-            return res.json({ error: true, pingable: false });
-        }
-        return res.json({ error: false, pingable: true, data: result });
+            pingInfo = { error: true, pingable: false };
+        } else pingInfo = { error: false, pingable: true, data: result };
+        return res.json(pingInfo);
     });
 });
 

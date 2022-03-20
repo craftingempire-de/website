@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>CraftingEmpire Startseite</title>
+        <title><% if(!pingInfo.error && pingInfo.pingable) { %><%= pingInfo.data.players.online %> / <%= pingInfo.data.players.max %> <% } %>CraftingEmpire | Home</title>
 
         <!-- Meta -->
         <meta property="og:site_name" content="craftingempire.de" />
@@ -36,7 +36,12 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+        <link rel="stylesheet" href="/static/styles/css/jstable.css" />
+        <script src="/static/scripts/JSTable/dist/jstable.min.js"></script>
+
         <link rel="stylesheet" href="/static/styles/css/main.css" />
+        <link rel="stylesheet" href="/static/styles/css/status.css" />
+
         <script src="/static/scripts/main.js"></script>
 
         <script src="/static/scripts/cookies.js"></script>
@@ -88,9 +93,56 @@
             </nav>
         </header>
         <main class="main-content" id="main-content">
-            <section>
-                <h1 class="mcfont">CRAFTINGEMPIRE.DE | Maintenance</h1>
+            <% if(!pingInfo.error && pingInfo.pingable) { %>
+            <section class="status-section">
+                <h1 class="server-info-title">CRAFTINGEMPIRE.DE | (TODO) ServerInfo: <%= pingInfo.data.players.online %> / <%= pingInfo.data.players.max %> Online</h1>
+
+                <% if(pingInfo.data.players.online >= 1) { %>
+                <table id="playersTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>UUID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Keine Informationen</td>
+                            <td>Keine Informationen</td>
+                        </tr>
+                        <tr>
+                            <td>Keine Informationen</td>
+                            <td>Keine Informationen</td>
+                        </tr>
+                        <tr>
+                            <td>Keine Informationen</td>
+                            <td>Keine Informationen</td>
+                        </tr>
+                        <tr>
+                            <td>Keine Informationen</td>
+                            <td>Keine Informationen</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <script>
+                    let playersTable = new JSTable('#playersTable', {
+                        labels: {
+                            placeholder: 'Suche...',
+                            perPage: 'Spieler pro Seite',
+                            noRows: 'Keine Spieler gefunden!',
+                            info: 'Spieler {start}-{end} von {rows}',
+                            loading: 'Lade Spieler Tabelle...',
+                            infoFiltered: 'Spieler {start}-{end} von {rows} (von insgesamt {rowsTotal} Spielern)',
+                        },
+                    });
+                </script>
+                <% } %>
             </section>
+            <% } else { %>
+            <section class="maintenance-section">
+                <h1 class="mcfont">CRAFTINGEMPIRE.DE | (TODO) Server Offline</h1>
+            </section>
+            <% } %>
         </main>
         <footer class="footer" id="footer">
             <div class="footer-content">

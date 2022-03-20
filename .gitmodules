@@ -1,0 +1,3 @@
+[submodule "static/scripts/JSTable"]
+	path = static/scripts/JSTable
+	url = git@github.com:jstable/JSTable.git
