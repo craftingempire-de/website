@@ -72,7 +72,10 @@
                 </ul>
                 <% if(isLoggedIn) { %>
                 <div class="nav-item nav-dc">
-                    <a href="javascript:void(0);" class="nav-link disabled"><img class="user-logo" src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png" alt="userlogo" /><%= user.username %></a>
+                    <a href="javascript:void(0);" class="nav-link disabled">
+                        <img class="user-logo" src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png" alt="userlogo" />
+                        <%= user.username %>
+                    </a>
                 </div>
                 <div class="nav-item nav-dc">
                     <a href="/oauth2/discord/logout" class="nav-link">Logout</a>

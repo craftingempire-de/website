@@ -148,6 +148,10 @@ header .navbar .nav-item {
 header .navbar .nav-item .nav-link {
   border: 1px solid transparent;
   padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 header .navbar .nav-item .nav-link:hover {
   color: var(--accent-color);
@@ -162,8 +166,9 @@ header .navbar .nav-item .nav-link:hover .fab {
   color: var(--accent-color);
 }
 header .navbar .user-logo {
-  width: 50px;
+  width: 30px;
   border-radius: 50%;
+  margin-right: 5px;
 }
 header .navbar .active {
   color: calc(var(--accent-color) - 20);
