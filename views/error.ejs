@@ -4,15 +4,15 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>CraftingEmpire | 404 Seite Nicht gefunden</title>
+        <title>CraftingEmpire Error</title>
 
         <!-- Meta -->
         <meta property="og:site_name" content="craftingempire.de" />
         <meta name="application-name" content="craftingempire.de" />
         <meta name="apple-mobile-web-app-title" content="craftingempire.de" />
         <meta property="og:title" content="craftingempire.de" />
-        <meta property="og:description" content="Diese Seite existiert nicht oder unsere Devs haben Wasser auf den Server gekippt." />
-        <meta name="description" content="Diese Seite existiert nicht oder unsere Devs haben Wasser auf den Server gekippt." />
+        <meta property="og:description" content="Etwas ist schief gelaufen." />
+        <meta name="description" content="Etwas ist schief gelaufen." />
 
         <meta property="og:locale" content="de" />
         <meta property="og:image" content="/static/logo.png" />
@@ -27,14 +27,24 @@
         <meta name="msapplication-TileColor" content="#060535" />
         <meta name="apple-mobile-web-app-status-bar-style" content="#060535" />
 
-        <link rel="canonical" href="/404" />
-        <meta property="og:url" content="/404" />
+        <link rel="canonical" href="/error" />
+        <meta property="og:url" content="/error" />
 
         <script src="https://cdn.jsdelivr.net/npm/hquery.js@0.0.6/dist/hQuery.min.js"></script>
 
         <!-- fontawesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github-dark.min.css" />
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                document.querySelectorAll('pre code').forEach((el) => {
+                    hljs.highlightElement(el);
+                });
+            });
+        </script>
 
         <link rel="stylesheet" href="/static/styles/css/main.css" />
         <script src="/static/scripts/main.js"></script>
@@ -66,7 +76,14 @@
         </header>
         <main class="main-content" id="main-content">
             <section>
-                <h1 class="mcfont">CRAFTINGEMPIRE.DE | ERROR 404</h1>
+                <h3><%= error.title %></h3>
+
+                <% if(applicationMode == "development") { %>
+                <p><%= error.description %></p>
+                <pre><code><%= error.stack %></code></pre>
+                <% } else { %>
+                <p><%= error.description %></p>
+                <% } %>
             </section>
         </main>
     </body>

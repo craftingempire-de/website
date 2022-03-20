@@ -141,17 +141,21 @@ app.use(
 
 // serve global favicon
 app.use(serveFavicon(staticPath + 'favicon.ico'));
+
 app.use('/static', express.static('static'));
 
 app.get('/discord', async (req, res) => {
     res.redirect('https://discord.gg/bUrpSBsBtb');
 });
+
 app.get('/github', async (req, res) => {
     res.redirect('https://github.com/craftingempire-de');
 });
+
 app.get('/twitter', async (req, res) => {
     res.redirect('https://twitter.com/crafting_empire');
 });
+
 app.get('/youtube', async (req, res) => {
     res.redirect('https://www.youtube.com/channel/UCFrJhIzCDYmR9AZkIlfeEAA');
 });
@@ -223,9 +227,14 @@ var refreshUserToken = async (refresh_token) => {
 app.get('/oauth2/discord/callback', async (req, res) => {
     let code = req.query.code;
     if (!code) {
-        return res.status(400).json({
-            error: true,
-            message: 'noCode',
+        return res.render('error', {
+            applicationMode: applicationMode,
+            pathname: req.url,
+            error: {
+                title: 'BAD REQUEST',
+                description: 'Du kannst nicht eingeloggt werden.',
+                stack: 'Es wurde versucht sich ohne den Discord Code einzuoggen.',
+            },
         });
     }
 
@@ -240,32 +249,23 @@ app.get('/oauth2/discord/callback', async (req, res) => {
             async (error, response, body) => {
                 if (error) {
                     app.logger.error(error);
-                    if (applicationMode === 'development') {
-                        res.status(500).json({
-                            error: true,
-                            message: error.message,
-                            stack: error.stack,
-                        });
-                    } else {
-                        res.status(500).json({
-                            error: true,
-                            message: 'serverError',
-                        });
-                    }
+                    error.title = error.name;
+                    error.description = 'Es konnten keine validen Daten von Discord abgerufen werden.';
+                    return res.render('error', {
+                        applicationMode: applicationMode,
+                        pathname: req.url,
+                        error: error,
+                    });
                 }
                 let obj = JSON.parse(body);
                 if (obj.error) {
-                    if (applicationMode === 'development')
-                        return res.status(500).json({
-                            error: true,
-                            message: obj.error,
-                            error_description: obj.error_description,
-                        });
-                    else
-                        return res.status(500).json({
-                            error: true,
-                            message: obj.error,
-                        });
+                    error.title = error.name;
+                    error.description = 'Es konnten keine validen Daten von Discord abgerufen werden.';
+                    return res.render('error', {
+                        applicationMode: applicationMode,
+                        pathname: req.url,
+                        error: error,
+                    });
                 }
                 let token = obj['access_token'];
                 let refresh_token = obj['refresh_token'];
@@ -283,60 +283,6 @@ app.get('/oauth2/discord/callback', async (req, res) => {
             client_secret: DISCORD_OAUTH2_APPLICATION_SECRET,
             grant_type: 'authorization_code',
             code: code,
-            redirect_uri: DISCORD_OAUTH2_CALLBACK,
-            scope: 'identify email guilds',
-        });
-});
-
-app.post('/oauth2/discord/refresh', async (req, res) => {
-    var refreshToken = req.body.refresh_token;
-    if (!refreshToken) {
-        return res.status(400).json({
-            error: true,
-            message: 'noRefreshTokenSpecified',
-        });
-    }
-    request
-        .post(
-            DISCORD_OAUTH2_ENDPOINT + '/oauth2/token',
-            {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-            },
-            (error, response, body) => {
-                if (error) {
-                    app.logger.log(error);
-                    return res.status(500).json({
-                        error: true,
-                        message: error.message,
-                        stack: error.stack,
-                    });
-                }
-                let obj = JSON.parse(body);
-                app.logger.log(obj);
-                if (obj.error) {
-                    if (applicationMode === 'development')
-                        return res.status(500).json({
-                            error: true,
-                            message: obj.error,
-                        });
-                    else return res.status(500);
-                }
-                let token = obj['access_token'];
-                let refresh_token = obj['refresh_token'];
-                return res.status(200).json({
-                    error: false,
-                    token: token,
-                    refresh_token: refresh_token,
-                });
-            }
-        )
-        .form({
-            client_id: DISCORD_OAUTH2_APPLICATION_ID,
-            client_secret: DISCORD_OAUTH2_APPLICATION_SECRET,
-            grant_type: 'refresh_token',
-            refresh_token: refreshToken,
             redirect_uri: DISCORD_OAUTH2_CALLBACK,
             scope: 'identify email guilds',
         });
