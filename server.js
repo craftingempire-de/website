@@ -217,6 +217,10 @@ app.get('/oauth2/discord/callback', async (req, res) => {
                             stack: 'Es wurden keine Benutzerdaten für unseren Discord Server gefunden.',
                         },
                     });
+                } else {
+                    if (applicationMode === 'development') {
+                        console.log('User Joined %o', joinedGuilds);
+                    }
                 }
 
                 req.session.isLoggedIn = true;
@@ -225,6 +229,54 @@ app.get('/oauth2/discord/callback', async (req, res) => {
                     token: token,
                     refresh_token: refresh_token,
                 };
+
+                let addUserAsync = async (user) => {
+                    let now = new Date();
+                    let current = await app.db.queryAsync('registered_users', { id: user.id });
+                    if (current && current.length > 0) {
+                        let currentUser = current[0];
+                        let update = {};
+                        if (currentUser.email != userData.email) {
+                            update.email = userData.email;
+                            update.last_modified = now;
+                        }
+
+                        if (currentUser.username != userData.username) {
+                            update.username = userData.username;
+                            update.tag = user.username + '#' + user.discriminator;
+                            update.last_modified = now;
+                        }
+                        if (currentUser.discriminator != userData.discriminator) {
+                            update.discriminator = userData.discriminator;
+                            update.tag = user.username + '#' + user.discriminator;
+                            update.last_modified = now;
+                        }
+
+                        if (Object.keys(update).length > 0) {
+                            await app.db.updateAsync(
+                                'registered_users',
+                                {
+                                    id: user.id,
+                                },
+                                update
+                            );
+                        }
+
+                        return;
+                    } else {
+                        await app.db.insertAsync('registered_users', {
+                            id: user.id,
+                            username: user.username,
+                            discriminator: user.discriminator,
+                            tag: user.username + '#' + user.discriminator,
+                            email: user.email,
+                            login_first: now,
+                            last_modified: now,
+                        });
+                    }
+                };
+
+                addUserAsync(userData);
 
                 return res.redirect(req.query.next || '/');
             }
