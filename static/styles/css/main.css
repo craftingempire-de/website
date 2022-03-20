@@ -48,6 +48,18 @@ body::after {
   width: 100vw;
 }
 
+.noselect {
+  user-select: none;
+}
+
+.select {
+  user-select: auto;
+}
+
+.textselect {
+  user-select: text;
+}
+
 .mcfont {
   font-family: "Minercraftory", sans-serif;
 }

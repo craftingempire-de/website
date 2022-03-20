@@ -4,7 +4,7 @@ let cookieModalHtml = `
         <div class="cookieModal-header">
             <h3 class="cookieModal-header-title">DIESE SEITE BENUTZT COOKIES!</h3>
         </div>
-        <div class="cookieModal-main">
+        <div class="cookieModal-main textselect">
             <i class="fas fa-cookie-bite fa-5x"></i>
             <p>Damit wir unsere Webseiten für Sie optimieren und personalisieren können verwenden wir Cookies. 
             Zudem werden Cookies gebraucht, um Funktionen von Soziale Media Plattformen anbieten zu können und Zugriffe auf unsere Webseiten zu analysieren
