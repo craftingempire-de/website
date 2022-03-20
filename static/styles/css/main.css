@@ -161,6 +161,10 @@ header .navbar .nav-item .nav-link:hover {
 header .navbar .nav-item .nav-link:hover .fab {
   color: var(--accent-color);
 }
+header .navbar .user-logo {
+  width: 50px;
+  border-radius: 50%;
+}
 header .navbar .active {
   color: calc(var(--accent-color) - 20);
   border: 1px dotted var(--accent-color);

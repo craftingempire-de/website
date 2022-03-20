@@ -70,9 +70,18 @@
                         <a target="_blank" href="/youtube" class="nav-link"> <i class="fab fa-youtube fa-xl"></i> Youtube </a>
                     </li>
                 </ul>
+                <% if(isLoggedIn) { %>
+                <div class="nav-item nav-dc">
+                    <a href="javascript:void(0);" class="nav-link disabled"><img class="user-logo" src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png" alt="userlogo" /><%= user.username %></a>
+                </div>
+                <div class="nav-item nav-dc">
+                    <a href="/oauth2/discord/logout" class="nav-link">Logout</a>
+                </div>
+                <% } else { %>
                 <div class="nav-item nav-dc">
                     <a href="/oauth2/discord/login" class="nav-link">Login via <i class="fab fa-discord"></i></a>
                 </div>
+                <% } %>
             </nav>
         </header>
         <main class="main-content" id="main-content">

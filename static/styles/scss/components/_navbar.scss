@@ -92,6 +92,11 @@ header {
             }
         }
 
+        .user-logo {
+            width: 50px;
+            border-radius: 50%;
+        }
+
         .active {
             color: calc(var(--accent-color) - 20);
             border: 1px dotted var(--accent-color);

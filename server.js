@@ -125,6 +125,9 @@ app.use(function (req, res, next) {
     if (!req.session.csrf) {
         req.session.csrf = randomBytes(100).toString('base64');
     }
+    if (req.query.next) {
+        req.session.next = req.query.next;
+    }
     next();
 });
 
@@ -270,11 +273,29 @@ app.get('/oauth2/discord/callback', async (req, res) => {
                 let token = obj['access_token'];
                 let refresh_token = obj['refresh_token'];
                 let userData = await fetchDiscordUserByToken(token);
-                console.log('USER LOGIN %o', userData);
                 let allJoinedGuilds = await fetchDiscordGuildByToken(token);
                 let joinedGuilds = allJoinedGuilds.filter((g) => g.id == DISCORD_GUILD_ID);
                 let joined = joinedGuilds.length > 0;
-                console.log('USER LOGIN JOINED GUILD ', joined);
+
+                if (!joined) {
+                    return res.render('error', {
+                        applicationMode: applicationMode,
+                        pathname: req.url,
+                        error: {
+                            title: 'Login Error',
+                            description: 'Du bist nicht auf unserem Discord Server',
+                            stack: 'Es wurden keine Benutzerdaten für unseren Discord Server gefunden.',
+                        },
+                    });
+                }
+
+                req.session.isLoggedIn = true;
+                req.session.user = {
+                    ...userData,
+                    token: token,
+                    refresh_token: refresh_token,
+                };
+
                 return res.redirect(req.query.next || '/');
             }
         )
@@ -297,19 +318,28 @@ app.get('/login', async (req, res) => {
 });
 
 app.get('/oauth2/discord/logout', async (req, res) => {
+    let red = req.session.next;
     req.session.isLoggedIn = false;
     req.session.destroy();
     return res.redirect(req.query.next || '/');
 });
 
 app.get('/logout', async (req, res) => {
-    return res.redirect('/oauth2/discord/' + req.url.split('/')[req.url.split('/').length - 1]);
+    let red = req.session.next;
+    req.session.isLoggedIn = false;
+    req.session.destroy();
+    return res.redirect(req.query.next || '/');
 });
 
 // ================================================ DISCORD LOGIN ================================================
 
 app.get('/', async (req, res) => {
-    res.render('index', { applicationMode: applicationMode, pathname: req.url });
+    res.render('index', {
+        applicationMode: applicationMode,
+        pathname: req.url,
+        isLoggedIn: req.session.isLoggedIn || false,
+        user: req.session.user || null,
+    });
 });
 
 app.get('/404', async (req, res) => {
